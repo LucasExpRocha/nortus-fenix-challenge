@@ -1,10 +1,17 @@
-import { twMerge } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge';
+
+type RHFRegister = {
+  name?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  ref?: React.RefCallback<HTMLInputElement>;
+};
 
 type TextFieldProps = {
   id: string;
   label: string;
-  value: string;
-  onChange: (val: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
   placeholder?: string;
   error?: string;
   autoComplete?: string;
@@ -12,6 +19,7 @@ type TextFieldProps = {
   type?: string;
   required?: boolean;
   className?: string;
+  register?: RHFRegister;
 };
 
 export default function TextField({
@@ -26,21 +34,27 @@ export default function TextField({
   type = 'text',
   required = true,
   className,
+  register,
 }: TextFieldProps) {
-  const hasValue = value && value.length > 0;
+  const inputName = register?.name ?? id;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    register?.onChange?.(e);
+    onChange?.(e.target.value);
+  };
 
   return (
     <div className={twMerge('w-full', className)}>
       <div className="relative w-full">
         <div className="w-full rounded-2xl border border-slate-700 bg-[#0E1626] focus-within:border-blue-500 font-normal">
           <input
+            {...register}
             id={id}
-            name={id}
+            name={inputName}
             type={type}
             autoComplete={autoComplete}
             autoFocus={autoFocus}
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={handleChange}
             aria-invalid={!!error}
             aria-describedby={error ? `${id}-error` : undefined}
             placeholder={placeholder}
@@ -51,9 +65,8 @@ export default function TextField({
             htmlFor={id}
             className={twMerge(
               'absolute left-4 transition-all pointer-events-none',
-              hasValue
-                ? '-top-2 translate-y-0 z-10 px-1 text-xs'
-                : 'top-1/2 -translate-y-1/2',
+              'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
+              'peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:z-10 peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs',
               'peer-focus:-top-2 peer-focus:translate-y-0 peer-focus:z-10 peer-focus:px-1 peer-focus:text-xs'
             )}
           >
@@ -75,7 +88,7 @@ export default function TextField({
       {error && (
         <span
           id={`${id}-error`}
-          className="mt-1 block text-sm text-red-500"
+          className="mt-1 mx-4 block font-inter font-normal leading-5 tracking-[0.51px] text-sm text-red-500"
           aria-live="polite"
         >
           {error}

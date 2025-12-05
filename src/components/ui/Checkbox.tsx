@@ -2,21 +2,51 @@
 
 import { twMerge } from 'tailwind-merge';
 
+type RHFRegister = {
+  name?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  ref?: React.RefCallback<HTMLInputElement>;
+};
+
 type CheckboxProps = {
-  checked: boolean;
-  onChange: (val: boolean) => void;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
   label: string;
   ariaLabel?: string;
   className?: string;
+  id?: string;
+  register?: RHFRegister;
 };
 
-export default function Checkbox({ checked, onChange, label, ariaLabel, className }: CheckboxProps) {
+export default function Checkbox({
+  checked,
+  onChange,
+  label,
+  ariaLabel,
+  className,
+  id,
+  register,
+}: CheckboxProps) {
+  const inputName = register?.name ?? id ?? label;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    register?.onChange?.(e);
+    onChange?.(e.target.checked);
+  };
   return (
-    <label className={twMerge('inline-flex items-center gap-2 text-sm text-slate-300 cursor-pointer select-none', className)}>
+    <label
+      className={twMerge(
+        'inline-flex items-center gap-2 text-sm text-slate-300 cursor-pointer select-none',
+        className
+      )}
+    >
       <input
         type="checkbox"
         checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
+        {...register}
+        id={id}
+        name={inputName}
+        onChange={handleChange}
         aria-label={ariaLabel ?? label}
         className="
           appearance-none
