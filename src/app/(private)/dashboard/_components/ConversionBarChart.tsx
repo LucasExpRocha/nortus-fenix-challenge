@@ -52,7 +52,7 @@ export default function ConversionBarChart({ isLoading, kpis }: Props) {
         id="cardTop"
         className="flex justify-between items-center mb-6 w-full h-14"
       >
-        <Title variant="default">Conversão</Title>
+        <Title variant="default">Taxa de conversão</Title>
       </div>
       <div id="cardBody">
         <div
