@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 type TitleProps = React.HTMLAttributes<HTMLElement> & {
   variant?: 'default' | 'h1' | 'h2' | 'subtitle';
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
 };
 
 export default function Title({
