@@ -33,13 +33,7 @@ export default function Title({
       'tracking-normal',
       'font-semibold',
     ].join(' '),
-    subtitle: [
-      'text-base',
-      'leading-5',
-      'tracking-normal',
-      'font-medium',
-      'opacity-80',
-    ].join(' '),
+    subtitle: ['text-sm', 'leading-4', 'font-normal'].join(' '),
   };
 
   const styles = twMerge(variants[variant], className);
