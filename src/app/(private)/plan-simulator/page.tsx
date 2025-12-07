@@ -1,9 +1,31 @@
 'use client';
 
-import simulatorPlans from '@/constants/simulator-plans';
-
 import PersonalizedPlans from './_components/PersonalizedPlans';
 import Sidebar from './_components/Sidebar';
+
+const simulatorPlans = {
+  includedBenefits: ['Tudo do básico', 'Carro reserva', 'Vidros'],
+  plansIndicators: [
+    {
+      name: 'Básico',
+      conversion: 75,
+      roi: 80,
+      value: 89.9,
+    },
+    {
+      name: 'Intermediário',
+      conversion: 48,
+      roi: 114,
+      value: 145.9,
+    },
+    {
+      name: 'Premium',
+      conversion: 25,
+      roi: 176,
+      value: 225.9,
+    },
+  ],
+};
 
 export default function PlanSimulator() {
   return (
