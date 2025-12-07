@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { FaPlus } from 'react-icons/fa';
 
 import Button from '@/components/ui/Button';
 
@@ -35,8 +36,19 @@ export default function Header() {
       </h1>
       {cfg.action && (
         <div className="flex items-center gap-3">
-          <Button fullWidth={false} className="h-9 md:h-10 px-4 py-2 text-sm">
-            {cfg.action.label}
+          <Button
+            fullWidth={false}
+            className="h-9 md:h-10 px-4 py-2 text-sm cursor-pointer"
+            onClick={() => {
+              if (pathname === '/ticket-management') {
+                const event = new CustomEvent('open-ticket-modal', {
+                  detail: { mode: 'create' },
+                });
+                window.dispatchEvent(event);
+              }
+            }}
+          >
+            <FaPlus className="mr-2" /> {cfg.action.label}
           </Button>
         </div>
       )}

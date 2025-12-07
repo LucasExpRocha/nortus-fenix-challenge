@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+
 import '../styles/globals.css';
+
+import { Toaster } from 'sonner';
 
 import Providers from './providers';
 
@@ -20,6 +23,7 @@ export default function RootLayout({
     <html lang="pt-br" className={inter.variable}>
       <body className="bg-[#0B1125]">
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );

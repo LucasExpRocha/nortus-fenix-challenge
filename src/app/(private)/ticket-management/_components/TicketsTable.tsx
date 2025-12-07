@@ -306,17 +306,23 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                     <td className="py-3 px-4">{ticket.responsible}</td>
                     <td className="py-3 px-4">
                       <div className="relative group">
-                        {/* Desktop: always show both links */}
                         <div className="hidden xl:flex items-center gap-6">
-                          <Link
-                            href={`/ticket-management/${ticket.id}/edit`}
+                          <button
                             className="text-slate-300 hover:text-slate-100 font-normal text-xs leading-4 text-center flex items-center gap-2"
+                            onClick={() => {
+                              const params = new URLSearchParams(
+                                Array.from(searchParams.entries())
+                              );
+                              params.set('edit', ticket.id);
+                              const url = `${pathname}?${params.toString()}`;
+                              router.push(url);
+                            }}
                           >
                             Editar{' '}
                             <PiPencilSimpleLine color="#1876D2" size={16} />
-                          </Link>
-                          <Link
-                            href={`/ticket-management/${ticket.id}`}
+                          </button>
+                          <button
+                            onClick={() => alert('Em desenvolvimento.')}
                             className="text-slate-300 hover:text-slate-100 font-normal text-xs leading-4 text-center flex items-center gap-2"
                           >
                             Ver{' '}
@@ -324,10 +330,9 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                               color="#1876D2"
                               size={16}
                             />
-                          </Link>
+                          </button>
                         </div>
 
-                        {/* Mobile: dropdown on hover/focus */}
                         <div className="xl:hidden">
                           <button
                             aria-label="Abrir menu de ações"
@@ -346,10 +351,15 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                             />
                           </button>
                           <div className="absolute right-0 top-full mt-1 hidden flex-col bg-slate-800 rounded shadow-lg z-20 min-w-[120px]">
-                            <Link
-                              href={`/ticket-management/${ticket.id}/edit`}
-                              className="px-3 py-2 text-slate-300 hover:text-slate-100 hover:bg-slate-700 text-xs flex items-center gap-2"
+                            <button
+                              className="px-3 py-2 text-slate-300 hover:text-slate-100 hover:bg-slate-700 text-xs flex items-center gap-2 text-left"
                               onClick={() => {
+                                const params = new URLSearchParams(
+                                  Array.from(searchParams.entries())
+                                );
+                                params.set('edit', ticket.id);
+                                const url = `${pathname}?${params.toString()}`;
+                                router.push(url);
                                 const menu = document.querySelector(
                                   `[data-ticket-id="${ticket.id}"] .xl:hidden > div`
                                 ) as HTMLElement;
@@ -358,7 +368,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                             >
                               <PiPencilSimpleLine color="#1876D2" size={14} />
                               Editar
-                            </Link>
+                            </button>
                             <Link
                               href={`/ticket-management/${ticket.id}`}
                               className="px-3 py-2 text-slate-300 hover:text-slate-100 hover:bg-slate-700 text-xs flex items-center gap-2"

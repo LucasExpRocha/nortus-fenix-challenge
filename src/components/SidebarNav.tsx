@@ -96,6 +96,7 @@ export default function SidebarNav({
                       ariaLabel={item.label}
                       isActive={isActive}
                       disabled={item.disabled}
+                      className={!item.disabled ? 'cursor-pointer' : ''}
                     >
                       <item.icon className="mx-auto text-[22px]" />
                     </IconButton>
