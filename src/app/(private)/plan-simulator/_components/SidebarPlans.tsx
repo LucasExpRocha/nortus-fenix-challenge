@@ -2,13 +2,34 @@ import Card from '@/components/ui/Cards';
 import Title from '@/components/ui/Title';
 import { currency } from '@/lib/utils/formatCurrency';
 
-export default function Sidebar({
+export default function SidebarPlans({
+  isLoading,
   includedBenefits,
   plansIndicators,
 }: {
-  includedBenefits: string[];
-  plansIndicators: SimulatorPlanIndicator[];
+  isLoading?: boolean;
+  includedBenefits?: string[];
+  plansIndicators?: SimulatorPlanIndicator[];
 }) {
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Card className="h-40 flex-center" aria-live="polite">
+          <Title variant="default">Carregando indicadores...</Title>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!includedBenefits || !plansIndicators || plansIndicators.length === 0) {
+    return (
+      <div className="space-y-6">
+        <Card className="h-40 flex-center" aria-live="polite">
+          <Title variant="default">Dados de indicadores indisponíveis.</Title>
+        </Card>
+      </div>
+    );
+  }
   return (
     <div className="space-y-6">
       <Card className="py-10 px-8">

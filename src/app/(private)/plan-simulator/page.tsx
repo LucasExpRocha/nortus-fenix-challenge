@@ -1,43 +1,37 @@
 'use client';
 
-import PersonalizedPlans from './_components/PersonalizedPlans';
-import Sidebar from './_components/Sidebar';
+import { useQuery } from '@tanstack/react-query';
 
-const simulatorPlans = {
-  includedBenefits: ['Tudo do básico', 'Carro reserva', 'Vidros'],
-  plansIndicators: [
-    {
-      name: 'Básico',
-      conversion: 75,
-      roi: 80,
-      value: 89.9,
-    },
-    {
-      name: 'Intermediário',
-      conversion: 48,
-      roi: 114,
-      value: 145.9,
-    },
-    {
-      name: 'Premium',
-      conversion: 25,
-      roi: 176,
-      value: 225.9,
-    },
-  ],
-};
+import { planSimulatorService } from '@/app/services/plan-simulator.service';
+
+import PersonalizedPlans from './_components/PersonalizedPlans';
+import SidebarPlans from './_components/SidebarPlans';
 
 export default function PlanSimulator() {
+  const { data: planSimulator, isLoading: isLoadingPlanSimulator } = useQuery({
+    queryKey: ['planSimulator'],
+    queryFn: planSimulatorService.getPlans,
+    structuralSharing: true,
+    retry: 2,
+    retryDelay: 1000,
+    staleTime: 10 * 1000,
+    gcTime: 5 * 60 * 1000,
+  });
+
   return (
     <div className="w-full space-y-6">
       <div className="grid grid-cols-12 gap-10">
         <div className="col-span-12 lg:col-span-8 space-y-6">
-          <PersonalizedPlans plansIndicators={simulatorPlans.plansIndicators} />
+          <PersonalizedPlans
+            isLoading={isLoadingPlanSimulator}
+            plansIndicators={planSimulator?.plansIndicators}
+          />
         </div>
         <div className="col-span-12 lg:col-span-4 space-y-6 h-full">
-          <Sidebar
-            includedBenefits={simulatorPlans.includedBenefits}
-            plansIndicators={simulatorPlans.plansIndicators}
+          <SidebarPlans
+            isLoading={isLoadingPlanSimulator}
+            includedBenefits={planSimulator?.includedBenefits}
+            plansIndicators={planSimulator?.plansIndicators}
           />
         </div>
       </div>

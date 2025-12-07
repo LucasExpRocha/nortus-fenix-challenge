@@ -9,19 +9,37 @@ import Title from '@/components/ui/Title';
 import { currency } from '@/lib/utils/formatCurrency';
 
 export default function PersonalizedPlans({
+  isLoading,
   plansIndicators,
 }: {
-  plansIndicators: SimulatorPlanIndicator[];
+  isLoading?: boolean;
+  plansIndicators?: SimulatorPlanIndicator[];
 }) {
   const [selectedPlan, setSelectedPlan] = useState<string>('Intermediário');
   const [vehicleValue, setVehicleValue] = useState<number>(50000);
   const [clientAge, setClientAge] = useState<number>(28);
   const [benefits, setBenefits] = useState<Record<string, boolean>>({
     rouboFurto: true,
-    colisao: false,
+    colisao: true,
     incendio: true,
     fenomenos: false,
   });
+
+  if (isLoading) {
+    return (
+      <Card className="h-40 flex-center" aria-live="polite">
+        <Title variant="default">Carregando planos...</Title>
+      </Card>
+    );
+  }
+
+  if (!plansIndicators || plansIndicators.length === 0) {
+    return (
+      <Card className="h-40 flex-center" aria-live="polite">
+        <Title variant="default">Dados de planos indisponíveis.</Title>
+      </Card>
+    );
+  }
 
   return (
     <Card>
