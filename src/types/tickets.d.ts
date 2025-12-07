@@ -20,3 +20,13 @@ type TicketsAllResponse = {
   total: number;
   listed: number;
 };
+
+type TicketFormData = {
+  ticketId: string;
+  priority: TicketPriority;
+  client: string;
+  email: string;
+  subject: string;
+  status: TicketStatus;
+  responsible: string;
+};
