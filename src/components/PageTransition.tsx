@@ -11,7 +11,7 @@ export default function PageTransition({
   return (
     <div
       key={pathname}
-      className="fade-in mx-6 xl:mx-20 2xl:mx-52 my-6 xl:my-14"
+      className="fade-in mr-3 ml-40 my-22 3xl:px-28 3xl:py-12 4xl:px-48 4xl:py-14"
     >
       {children}
     </div>
