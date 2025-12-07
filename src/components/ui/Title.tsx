@@ -14,12 +14,9 @@ export default function Title({
   ...props
 }: TitleProps) {
   const variants: Record<NonNullable<TitleProps['variant']>, string> = {
-    default: [
-      'text-[20px]',
-      'leading-[16px]',
-      'tracking-normal',
-      'font-bold',
-    ].join(' '),
+    default: ['text-xl', 'leading-[16px]', 'tracking-normal', 'font-bold'].join(
+      ' '
+    ),
     h1: [
       'text-3xl',
       'md:text-4xl',
