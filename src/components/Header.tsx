@@ -29,9 +29,9 @@ export default function Header() {
   return (
     <header
       aria-label="Barra superior de navegação"
-      className="w-full h-16 md:h-20 bg-[#20273E] flex items-center justify-between px-6 md:px-10"
+      className="w-full h-16 md:h-20 bg-[#20273E] flex items-center justify-between px-6 md:px-10 fixed z-10"
     >
-      <h1 className="text-white text-sm md:text-lg font-medium tracking-wide">
+      <h1 className="text-white text-sm md:text-lg font-medium tracking-wide p-36">
         {cfg.title}
       </h1>
       {cfg.action && (
