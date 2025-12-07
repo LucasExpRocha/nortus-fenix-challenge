@@ -166,7 +166,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
           </Title>
         </div>
 
-        <div className="grid grid-cols-12 gap-2">
+        <div className="flex items-center gap-2">
           <TextField
             id="buscar"
             label="Buscar por ID, cliente ou assunto..."
@@ -178,7 +178,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
             required={false}
             variant="filter"
             startIcon={<IoIosSearch />}
-            className="col-span-6"
+            className="w-full flex-2"
           />
 
           <Select
@@ -189,7 +189,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
             }}
             options={statusOptions}
             ariaLabel="Filtro de status"
-            className="min-w-40 col-span-2"
+            className="w-full md:min-w-40 flex-1"
           />
 
           <Select
@@ -200,7 +200,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
             }}
             options={priorityOptions}
             ariaLabel="Filtro de prioridade"
-            className="min-w-52 col-span-2"
+            className="w-full md:min-w-52 flex-1"
           />
 
           <Select
@@ -211,7 +211,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
             }}
             options={responsibleOptions}
             ariaLabel="Filtro de responsável"
-            className="min-w-52 col-span-2"
+            className="w-full col-span-12 sm:col-span-6 md:col-span-2 md:min-w-52 flex-1"
           />
         </div>
 
@@ -219,7 +219,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
           <table className="table-auto min-w-full text-sm">
             <thead>
               <tr className="text-left text-slate-300">
-                <th className="py-3 px-4">ID</th>
+                <th className="py-3 px-4 ">ID</th>
                 <th className="py-3 px-4">Prioridade</th>
                 <th className="py-3 px-4">Cliente</th>
                 <th className="py-3 px-4">Assunto</th>
@@ -257,19 +257,31 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                         {ticket.priority}
                       </span>
                     </td>
-                    <td className="py-3 px-4">
-                      <span className="font-semibold leading-4">
-                        {ticket.client}
-                      </span>
-                      <br />
-                      <span className="font-normal leading-4">
-                        {ticket.email}
-                      </span>
+                    <td className="py-3 px-4 max-w-[100px]">
+                      <div className="relative group">
+                        <span className="font-semibold leading-4 truncate block">
+                          {ticket.client}
+                        </span>
+                        <span className="font-normal leading-4 truncate block">
+                          {ticket.email}
+                        </span>
+                        <div className="absolute left-0 top-full mt-1 hidden group-hover:block lg:hidden px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
+                          {ticket.client} – {ticket.email}
+                        </div>
+                      </div>
                     </td>
-                    <td className="py-3 px-4">
-                      <span className="font-semibold leading-4">
-                        {ticket.subject}
-                      </span>
+                    <td className="py-3 px-4 max-w-[100px]">
+                      <div className="relative group">
+                        <span
+                          className="font-semibold leading-4 truncate block"
+                          title={ticket.subject}
+                        >
+                          {ticket.subject}
+                        </span>
+                        <div className="absolute left-0 top-full mt-1 hidden group-hover:block px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
+                          {ticket.subject}
+                        </div>
+                      </div>
                     </td>
                     <td className="py-3 px-4">
                       <span
@@ -278,31 +290,93 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                         {ticket.status}
                       </span>
                     </td>
+                    <td className="py-3 px-4 max-w-[100px]">
+                      <div className="relative group">
+                        <span
+                          className="font-semibold leading-4 truncate block"
+                          title={formatDateTime(ticket.createdAt)}
+                        >
+                          {formatDateTime(ticket.createdAt)}
+                        </span>
+                        <div className="absolute left-0 top-full mt-1 hidden group-hover:block px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
+                          {formatDateTime(ticket.createdAt)}
+                        </div>
+                      </div>
+                    </td>
                     <td className="py-3 px-4">{ticket.responsible}</td>
                     <td className="py-3 px-4">
-                      <span className="font-semibold leading-4">
-                        {formatDateTime(ticket.createdAt)}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-6">
-                        <Link
-                          href={`/ticket-management/${ticket.id}/edit`}
-                          className="text-slate-300 hover:text-slate-100 font-normal text-xs leading-4 text-center flex items-center gap-2"
-                        >
-                          Editar{' '}
-                          <PiPencilSimpleLine color="#1876D2" size={16} />
-                        </Link>
-                        <Link
-                          href={`/ticket-management/${ticket.id}`}
-                          className="text-slate-300 hover:text-slate-100 font-normal text-xs leading-4 text-center flex items-center gap-2"
-                        >
-                          Ver{' '}
-                          <MdOutlineKeyboardArrowRight
-                            color="#1876D2"
-                            size={16}
-                          />
-                        </Link>
+                      <div className="relative group">
+                        {/* Desktop: always show both links */}
+                        <div className="hidden 1280:flex items-center gap-6">
+                          <Link
+                            href={`/ticket-management/${ticket.id}/edit`}
+                            className="text-slate-300 hover:text-slate-100 font-normal text-xs leading-4 text-center flex items-center gap-2"
+                          >
+                            Editar{' '}
+                            <PiPencilSimpleLine color="#1876D2" size={16} />
+                          </Link>
+                          <Link
+                            href={`/ticket-management/${ticket.id}`}
+                            className="text-slate-300 hover:text-slate-100 font-normal text-xs leading-4 text-center flex items-center gap-2"
+                          >
+                            Ver{' '}
+                            <MdOutlineKeyboardArrowRight
+                              color="#1876D2"
+                              size={16}
+                            />
+                          </Link>
+                        </div>
+
+                        {/* Mobile: dropdown on hover/focus */}
+                        <div className="1280:hidden">
+                          <button
+                            aria-label="Abrir menu de ações"
+                            className="text-slate-300 hover:text-slate-100 flex items-center gap-1 text-xs leading-4"
+                            onClick={(e) => {
+                              const menu = (e.currentTarget as HTMLElement)
+                                .nextElementSibling as HTMLElement;
+                              menu.classList.toggle('hidden');
+                            }}
+                          >
+                            Ações
+                            <MdOutlineKeyboardArrowRight
+                              color="#1876D2"
+                              size={16}
+                              className="transform group-hover:rotate-90 transition-transform"
+                            />
+                          </button>
+                          <div className="absolute right-0 top-full mt-1 hidden flex-col bg-slate-800 rounded shadow-lg z-20 min-w-[120px]">
+                            <Link
+                              href={`/ticket-management/${ticket.id}/edit`}
+                              className="px-3 py-2 text-slate-300 hover:text-slate-100 hover:bg-slate-700 text-xs flex items-center gap-2"
+                              onClick={() => {
+                                const menu = document.querySelector(
+                                  `[data-ticket-id="${ticket.id}"] .1280\\:hidden > div`
+                                ) as HTMLElement;
+                                if (menu) menu.classList.add('hidden');
+                              }}
+                            >
+                              <PiPencilSimpleLine color="#1876D2" size={14} />
+                              Editar
+                            </Link>
+                            <Link
+                              href={`/ticket-management/${ticket.id}`}
+                              className="px-3 py-2 text-slate-300 hover:text-slate-100 hover:bg-slate-700 text-xs flex items-center gap-2"
+                              onClick={() => {
+                                const menu = document.querySelector(
+                                  `[data-ticket-id="${ticket.id}"] .1280\\:hidden > div`
+                                ) as HTMLElement;
+                                if (menu) menu.classList.add('hidden');
+                              }}
+                            >
+                              <MdOutlineKeyboardArrowRight
+                                color="#1876D2"
+                                size={14}
+                              />
+                              Ver
+                            </Link>
+                          </div>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -312,7 +386,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
           </table>
         </div>
 
-        <div className="flex items-center gap-4 justify-end w-full px-6">
+        <div className="flex flex-wrap items-center gap-4 justify-between md:justify-end w-full px-6">
           <div className="flex items-center gap-6">
             <button
               aria-label="Primeira página"
