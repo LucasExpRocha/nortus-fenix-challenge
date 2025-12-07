@@ -9,6 +9,9 @@ type SelectProps = {
   options: Option[];
   ariaLabel?: string;
   className?: string;
+  containerClassName?: string;
+  selectClassName?: string;
+  placeholder?: string;
 };
 
 function ChevronDownIcon() {
@@ -39,12 +42,16 @@ export default function Select({
   options,
   ariaLabel,
   className,
+  containerClassName,
+  selectClassName,
+  placeholder,
 }: SelectProps) {
   return (
     <div className={twMerge('w-full', className)}>
       <div
         className={twMerge(
-          'flex items-center gap-2.5 h-[38px] rounded-3xl bg-[#0B1125] pr-2 pl-4'
+          'flex items-center gap-2.5 h-[38px] rounded-3xl bg-[#0B1125] pr-2 pl-4',
+          containerClassName
         )}
         style={{ transform: 'rotate(0deg)', opacity: 1 }}
       >
@@ -54,9 +61,15 @@ export default function Select({
           onChange={(e) => onChange(e.target.value)}
           aria-label={ariaLabel}
           className={twMerge(
-            'w-full bg-transparent text-white text-sm outline-none appearance-none cursor-pointer'
+            'w-full bg-transparent text-white text-sm outline-none appearance-none cursor-pointer',
+            selectClassName
           )}
         >
+          {placeholder && (
+            <option value="" disabled hidden>
+              {placeholder}
+            </option>
+          )}
           {options.map((opt) => {
             const val = typeof opt === 'string' ? opt : opt.value;
             const label = typeof opt === 'string' ? opt : opt.label;

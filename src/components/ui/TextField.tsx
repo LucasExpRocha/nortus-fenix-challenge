@@ -23,6 +23,8 @@ type TextFieldProps = {
   variant?: 'default' | 'filter';
   startIcon?: React.ReactNode;
   outside?: boolean;
+  inputClassName?: string;
+  containerClassName?: string;
 };
 
 export default function TextField({
@@ -41,6 +43,8 @@ export default function TextField({
   variant = 'default',
   startIcon,
   outside = false,
+  inputClassName = '',
+  containerClassName = '',
 }: TextFieldProps) {
   const inputName = register?.name ?? id;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +68,8 @@ export default function TextField({
           )}
           <div
             className={twMerge(
-              'relative flex items-center gap-3 h-[38px] rounded-3xl border border-slate-700 bg-[#0B1125] px-4 py-2 focus-within:border-blue-500'
+              'relative flex items-center gap-3 h-[38px] rounded-3xl border border-slate-700 bg-[#0B1125] px-4 py-2 focus-within:border-blue-500',
+              containerClassName
             )}
           >
             {startIcon && <span aria-hidden="true">{startIcon}</span>}
@@ -84,7 +89,8 @@ export default function TextField({
               className={twMerge(
                 outside
                   ? 'flex-1 bg-transparent font-inter not-italic font-normal text-[14px] leading-[22px] tracking-[0] outline-none placeholder-slate-400'
-                  : 'peer flex-1 bg-transparent font-inter not-italic font-normal text-[14px] leading-[22px] tracking-[0] outline-none placeholder-transparent'
+                  : 'peer flex-1 bg-transparent font-inter not-italic font-normal text-[14px] leading-[22px] tracking-[0] outline-none placeholder-transparent',
+                inputClassName
               )}
             />
             {!outside && (
@@ -118,13 +124,18 @@ export default function TextField({
             <label
               htmlFor={id}
               className={twMerge(
-                'mb-1 block font-inter font-normal text-xs tracking-[0.32px] px-1'
+                'mb-1 block font-medium text-base leading-6 tracking-[0.15px] ml-5.5'
               )}
             >
               {label} {required && <span className="text-[#FFB4AB]">*</span>}
             </label>
           )}
-          <div className="w-full rounded-2xl border border-slate-700 bg-[#0E1626] focus-within:border-blue-500 font-normal">
+          <div
+            className={twMerge(
+              'w-full rounded-2xl border border-slate-700 bg-[#0E1626] focus-within:border-blue-500 font-normal',
+              containerClassName
+            )}
+          >
             <input
               {...register}
               id={id}
@@ -140,7 +151,8 @@ export default function TextField({
               className={twMerge(
                 outside
                   ? 'w-full bg-transparent font-inter font-normal text-lg md:leading-7 tracking-[0.32px] py-2 px-5 md:py-5 rounded-2xl outline-none placeholder-slate-400'
-                  : 'peer w-full bg-transparent font-inter font-normal text-lg md:leading-7 tracking-[0.32px] py-2 px-5 md:py-5 rounded-2xl outline-none placeholder-transparent peer-focus:placeholder-slate-400'
+                  : 'peer w-full bg-transparent font-inter font-normal text-lg md:leading-7 tracking-[0.32px] py-2 px-5 md:py-5 rounded-2xl outline-none placeholder-transparent peer-focus:placeholder-slate-400',
+                inputClassName
               )}
             />
 
@@ -153,13 +165,14 @@ export default function TextField({
                   'peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:z-10 peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs',
                   'peer-focus:-top-2 peer-focus:translate-y-0 peer-focus:z-10 peer-focus:px-1 peer-focus:text-xs'
                 )}
+                style={{ transform: 'translateY(-50%)' }}
               >
                 {label} {required && <span className="text-[#FFB4AB]">*</span>}
               </label>
             )}
           </div>
 
-          {placeholder && (
+          {placeholder && !outside && (
             <span
               id={`${id}-placeholder`}
               className="mt-1 mx-4 block font-inter font-normal text-base leading-5 tracking-[0.51px]"
