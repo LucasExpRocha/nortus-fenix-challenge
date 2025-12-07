@@ -307,7 +307,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                     <td className="py-3 px-4">
                       <div className="relative group">
                         {/* Desktop: always show both links */}
-                        <div className="hidden 1280:flex items-center gap-6">
+                        <div className="hidden xl:flex items-center gap-6">
                           <Link
                             href={`/ticket-management/${ticket.id}/edit`}
                             className="text-slate-300 hover:text-slate-100 font-normal text-xs leading-4 text-center flex items-center gap-2"
@@ -328,7 +328,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                         </div>
 
                         {/* Mobile: dropdown on hover/focus */}
-                        <div className="1280:hidden">
+                        <div className="xl:hidden">
                           <button
                             aria-label="Abrir menu de ações"
                             className="text-slate-300 hover:text-slate-100 flex items-center gap-1 text-xs leading-4"
@@ -351,7 +351,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                               className="px-3 py-2 text-slate-300 hover:text-slate-100 hover:bg-slate-700 text-xs flex items-center gap-2"
                               onClick={() => {
                                 const menu = document.querySelector(
-                                  `[data-ticket-id="${ticket.id}"] .1280\\:hidden > div`
+                                  `[data-ticket-id="${ticket.id}"] .xl:hidden > div`
                                 ) as HTMLElement;
                                 if (menu) menu.classList.add('hidden');
                               }}
@@ -364,7 +364,7 @@ export default function TicketsTable({ ticketsList, isLoading }: Props) {
                               className="px-3 py-2 text-slate-300 hover:text-slate-100 hover:bg-slate-700 text-xs flex items-center gap-2"
                               onClick={() => {
                                 const menu = document.querySelector(
-                                  `[data-ticket-id="${ticket.id}"] .1280\\:hidden > div`
+                                  `[data-ticket-id="${ticket.id}"] .xl:hidden > div`
                                 ) as HTMLElement;
                                 if (menu) menu.classList.add('hidden');
                               }}
