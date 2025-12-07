@@ -20,6 +20,9 @@ type TextFieldProps = {
   required?: boolean;
   className?: string;
   register?: RHFRegister;
+  variant?: 'default' | 'filter';
+  startIcon?: React.ReactNode;
+  outside?: boolean;
 };
 
 export default function TextField({
@@ -35,6 +38,9 @@ export default function TextField({
   required = true,
   className,
   register,
+  variant = 'default',
+  startIcon,
+  outside = false,
 }: TextFieldProps) {
   const inputName = register?.name ?? id;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,59 +50,135 @@ export default function TextField({
 
   return (
     <div className={twMerge('w-full', className)}>
-      <div className="relative w-full">
-        <div className="w-full rounded-2xl border border-slate-700 bg-[#0E1626] focus-within:border-blue-500 font-normal">
-          <input
-            {...register}
-            id={id}
-            name={inputName}
-            type={type}
-            autoComplete={autoComplete}
-            autoFocus={autoFocus}
-            value={value}
-            onChange={handleChange}
-            aria-invalid={!!error}
-            aria-describedby={error ? `${id}-error` : undefined}
-            placeholder={placeholder}
+      {variant === 'filter' ? (
+        <div className={twMerge('w-full')}>
+          {outside && (
+            <label
+              htmlFor={id}
+              className={twMerge(
+                'mb-1 block font-inter font-normal text-xs tracking-[0.32px] px-1'
+              )}
+            >
+              {label} {required && <span className="text-[#FFB4AB]">*</span>}
+            </label>
+          )}
+          <div
             className={twMerge(
-              'peer w-full bg-transparent font-inter font-normal',
-              'text-lg md:leading-7 tracking-[0.32px] py-2 px-5 md:py-5 rounded-2xl',
-              'outline-none placeholder-transparent peer-focus:placeholder-slate-400'
-            )}
-          />
-
-          <label
-            htmlFor={id}
-            className={twMerge(
-              'absolute left-4 transition-all pointer-events-none',
-              'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
-              'peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:z-10 peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs',
-              'peer-focus:-top-2 peer-focus:translate-y-0 peer-focus:z-10 peer-focus:px-1 peer-focus:text-xs'
+              'relative flex items-center gap-3 h-[38px] rounded-3xl border border-slate-700 bg-[#0B1125] px-4 py-2 focus-within:border-blue-500'
             )}
           >
-            {label} {required && <span className="text-[#FFB4AB]">*</span>}
-          </label>
+            {startIcon && <span aria-hidden="true">{startIcon}</span>}
+            <input
+              {...register}
+              id={id}
+              name={inputName}
+              type={type}
+              autoComplete={autoComplete}
+              autoFocus={autoFocus}
+              value={value}
+              onChange={handleChange}
+              aria-invalid={!!error}
+              aria-describedby={error ? `${id}-error` : undefined}
+              aria-label={label}
+              placeholder={placeholder}
+              className={twMerge(
+                outside
+                  ? 'flex-1 bg-transparent font-inter not-italic font-normal text-[14px] leading-[22px] tracking-[0] outline-none placeholder-slate-400'
+                  : 'peer flex-1 bg-transparent font-inter not-italic font-normal text-[14px] leading-[22px] tracking-[0] outline-none placeholder-transparent'
+              )}
+            />
+            {!outside && (
+              <label
+                htmlFor={id}
+                className={twMerge(
+                  'absolute left-4 transition-all pointer-events-none',
+                  'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
+                  'peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:z-10 peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs',
+                  'peer-focus:-top-2 peer-focus:translate-y-0 peer-focus:z-10 peer-focus:px-1 peer-focus:text-xs'
+                )}
+              >
+                {label} {required && <span className="text-[#FFB4AB]">*</span>}
+              </label>
+            )}
+          </div>
+
+          {error && (
+            <span
+              id={`${id}-error`}
+              className="mt-1 mx-4 block font-inter font-normal leading-5 tracking-[0.51px] text-sm text-red-500"
+              aria-live="polite"
+            >
+              {error}
+            </span>
+          )}
         </div>
-      </div>
+      ) : (
+        <div className="relative w-full">
+          {outside && (
+            <label
+              htmlFor={id}
+              className={twMerge(
+                'mb-1 block font-inter font-normal text-xs tracking-[0.32px] px-1'
+              )}
+            >
+              {label} {required && <span className="text-[#FFB4AB]">*</span>}
+            </label>
+          )}
+          <div className="w-full rounded-2xl border border-slate-700 bg-[#0E1626] focus-within:border-blue-500 font-normal">
+            <input
+              {...register}
+              id={id}
+              name={inputName}
+              type={type}
+              autoComplete={autoComplete}
+              autoFocus={autoFocus}
+              value={value}
+              onChange={handleChange}
+              aria-invalid={!!error}
+              aria-describedby={error ? `${id}-error` : undefined}
+              placeholder={placeholder}
+              className={twMerge(
+                outside
+                  ? 'w-full bg-transparent font-inter font-normal text-lg md:leading-7 tracking-[0.32px] py-2 px-5 md:py-5 rounded-2xl outline-none placeholder-slate-400'
+                  : 'peer w-full bg-transparent font-inter font-normal text-lg md:leading-7 tracking-[0.32px] py-2 px-5 md:py-5 rounded-2xl outline-none placeholder-transparent peer-focus:placeholder-slate-400'
+              )}
+            />
 
-      {placeholder && (
-        <span
-          id={`${id}-placeholder`}
-          className="mt-1 mx-4 block font-inter font-normal text-base leading-5 tracking-[0.51px]"
-          aria-live="polite"
-        >
-          {placeholder}
-        </span>
-      )}
+            {!outside && (
+              <label
+                htmlFor={id}
+                className={twMerge(
+                  'absolute left-4 transition-all pointer-events-none',
+                  'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
+                  'peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:z-10 peer-[:not(:placeholder-shown)]:px-1 peer-[:not(:placeholder-shown)]:text-xs',
+                  'peer-focus:-top-2 peer-focus:translate-y-0 peer-focus:z-10 peer-focus:px-1 peer-focus:text-xs'
+                )}
+              >
+                {label} {required && <span className="text-[#FFB4AB]">*</span>}
+              </label>
+            )}
+          </div>
 
-      {error && (
-        <span
-          id={`${id}-error`}
-          className="mt-1 mx-4 block font-inter font-normal leading-5 tracking-[0.51px] text-sm text-red-500"
-          aria-live="polite"
-        >
-          {error}
-        </span>
+          {placeholder && (
+            <span
+              id={`${id}-placeholder`}
+              className="mt-1 mx-4 block font-inter font-normal text-base leading-5 tracking-[0.51px]"
+              aria-live="polite"
+            >
+              {placeholder}
+            </span>
+          )}
+
+          {error && (
+            <span
+              id={`${id}-error`}
+              className="mt-1 mx-4 block font-inter font-normal leading-5 tracking-[0.51px] text-sm text-red-500"
+              aria-live="polite"
+            >
+              {error}
+            </span>
+          )}
+        </div>
       )}
     </div>
   );
