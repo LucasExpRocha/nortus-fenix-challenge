@@ -11,7 +11,7 @@ export default function TicketMetricsHeader({
   ticketsList?: TicketsAllResponse;
   isLoading: boolean;
 }) {
-  const tickets = useMemo(() => ticketsList?.data ?? [], [ticketsList]);
+  const tickets = (ticketsList?.data?.filter(Boolean) || []) as TicketItem[];
 
   const open = tickets.filter((t) => t && t.status === 'Aberto').length;
   const progress = tickets.filter(
@@ -36,8 +36,8 @@ export default function TicketMetricsHeader({
           closed
             .map(
               (t) =>
-                (new Date(t!.updatedAt).getTime() -
-                  new Date(t!.createdAt).getTime()) /
+                (new Date(t.updatedAt).getTime() -
+                  new Date(t.createdAt).getTime()) /
                 36e5
             )
             .reduce((a, b) => a + b, 0) / closed.length

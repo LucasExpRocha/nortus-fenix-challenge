@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ticketsService } from '@/app/services/tickets.service';
 
 import TicketMetricsHeader from './_components/TicketMetricsHeader';
+import TicketsTable from './_components/TicketsTable';
 
 export default function TicketManagement() {
   const { data: ticketsList, isLoading: isLoadingTicketsList } = useQuery({
@@ -19,6 +20,10 @@ export default function TicketManagement() {
   return (
     <div>
       <TicketMetricsHeader
+        ticketsList={ticketsList}
+        isLoading={isLoadingTicketsList}
+      />
+      <TicketsTable
         ticketsList={ticketsList}
         isLoading={isLoadingTicketsList}
       />
