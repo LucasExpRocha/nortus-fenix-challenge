@@ -49,7 +49,7 @@ export default function Button({
     base,
     width,
     pattern,
-    disabled ? disabledStyles : '',
+    disabled ? disabledStyles : 'cursor-pointer',
     className
   );
   return (

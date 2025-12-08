@@ -440,7 +440,11 @@ function TicketsTableInner({
             aria-label="Primeira página"
             disabled={currentPage <= 1}
             onClick={goToFirstPage}
-            className={currentPage <= 1 ? 'opacity-50 cursor-not-allowed' : ''}
+            className={
+              currentPage <= 1
+                ? 'opacity-50 cursor-not-allowed'
+                : 'cursor-pointer'
+            }
           >
             <Image
               src="/svgs/arrowleftfinish.svg"
@@ -453,7 +457,11 @@ function TicketsTableInner({
             aria-label="Página anterior"
             disabled={currentPage <= 1}
             onClick={goToPreviousPage}
-            className={currentPage <= 1 ? 'opacity-50 cursor-not-allowed' : ''}
+            className={
+              currentPage <= 1
+                ? 'opacity-50 cursor-not-allowed'
+                : 'cursor-pointer'
+            }
           >
             <Image
               src="/svgs/arrowleft.svg"
@@ -474,7 +482,9 @@ function TicketsTableInner({
             disabled={currentPage >= totalPages}
             onClick={goToNextPage}
             className={
-              currentPage >= totalPages ? 'opacity-50 cursor-not-allowed' : ''
+              currentPage >= totalPages
+                ? 'opacity-50 cursor-not-allowed'
+                : 'cursor-pointer'
             }
           >
             <Image
@@ -489,7 +499,9 @@ function TicketsTableInner({
             disabled={currentPage >= totalPages}
             onClick={goToLastPage}
             className={
-              currentPage >= totalPages ? 'opacity-50 cursor-not-allowed' : ''
+              currentPage >= totalPages
+                ? 'opacity-50 cursor-not-allowed'
+                : 'cursor-pointer'
             }
           >
             <Image
