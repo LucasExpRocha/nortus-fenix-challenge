@@ -66,7 +66,7 @@ export default function ChatIa() {
   return (
     <div>
       <section aria-label="Campo de mensagens">
-        <Card className="h-full min-h-[40svh] max-h-[60svh] max-w-[75svw]">
+        <Card className="m-auto h-full min-h-[40svh] max-h-[60svh] max-w-[75svw]">
           <div
             ref={listRef}
             className="h-full overflow-y-auto scroll-smooth pr-2 pb-2 chat-scroll flex flex-col gap-10"

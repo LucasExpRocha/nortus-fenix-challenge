@@ -46,7 +46,7 @@ export default function SidebarPlans({
         </div>
       </Card>
 
-      <Card className="flex-center flex-col mt-8 gap-8 p-10">
+      <Card className="flex-center flex-col 2xl:mt-8 gap-8 p-10">
         <Title aria-label="Indicadores" className="content-start w-full">
           Indicadores
         </Title>
