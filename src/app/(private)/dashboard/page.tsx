@@ -33,15 +33,15 @@ export default function Dashboard() {
   });
 
   return (
-    <div className="flex flex-col gap-10">
-      <section className="grid grid-cols-3 gap-10">
-        <Card className="col-span-2 w-full">
+    <div className="flex flex-col gap-4 2xl:gap-10">
+      <section className="grid grid-cols-3 gap-4 2xl:gap-10 max-md:grid-cols-1">
+        <Card className="md:col-span-2 w-full">
           <KpiTrendsChart
             isLoading={isLoadingNortusVumDashboard}
             kpis={nortusVumDashboard?.kpisTrend}
           />
         </Card>
-        <Card className="max-w-xl">
+        <Card className="w-full">
           <ConversionBarChart
             isLoading={isLoadingNortusVumDashboard}
             kpis={nortusVumDashboard?.kpisTrend}

@@ -18,9 +18,12 @@ type HeaderConfig = {
 
 const configs: Record<string, HeaderConfig> = {
   '/dashboard': { title: 'Dashboard' },
-  '/ticket-management': { title: 'Ticket', action: { label: 'Novo ticket' } },
-  '/plan-simulator': { title: 'Plan' },
-  '/chat-ia': { title: 'Chat' },
+  '/ticket-management': {
+    title: 'Gestão de Tickets',
+    action: { label: 'Novo ticket' },
+  },
+  '/plan-simulator': { title: 'Simulador de Planos' },
+  '/chat-ia': { title: 'Chat & Assistente Virtual' },
 };
 
 export default function Header() {

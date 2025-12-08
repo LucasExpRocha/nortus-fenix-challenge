@@ -69,7 +69,10 @@ export default function TicketMetricsHeader({
     },
   ];
   return (
-    <header className="grid grid-cols-4 gap-6" aria-label="Métricas de tickets">
+    <header
+      className="grid grid-cols-4 gap-4 2xl:gap-6 max-md:grid-cols-2 "
+      aria-label="Métricas de tickets"
+    >
       {metrics.map((metric) => (
         <Card
           key={metric.title}

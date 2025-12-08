@@ -20,14 +20,14 @@ export default function PlanSimulator() {
 
   return (
     <div className="w-full space-y-6">
-      <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 lg:col-span-8 space-y-6">
+      <div className="grid grid-cols-12 gap-4 2xl:gap-10">
+        <div className="col-span-12 lg:col-span-8">
           <PersonalizedPlans
             isLoading={isLoadingPlanSimulator}
             plansIndicators={planSimulator?.plansIndicators}
           />
         </div>
-        <div className="col-span-12 lg:col-span-4 space-y-6 h-full">
+        <div className="col-span-12 lg:col-span-4 h-full">
           <SidebarPlans
             isLoading={isLoadingPlanSimulator}
             includedBenefits={planSimulator?.includedBenefits}
