@@ -93,7 +93,7 @@ export default function ChatIa() {
                           <Button
                             key={action.id}
                             type="button"
-                            className="text-xs shadow-[0_0_10px_0_#1876D2]"
+                            className="text-xs shadow-[0_0_10px_0_#1876D2] cursor-pointer"
                           >
                             {action.action}
                           </Button>
@@ -126,14 +126,21 @@ export default function ChatIa() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Escreva aqui..."
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendUserMessage();
+              }
+            }}
             aria-label="Campo de mensagem"
             className="w-full h-20 rounded-[100px] bg-white/10 placeholder-slate-300 pl-[21.38px] pr-[70px] outline-none border border-white/20 opacity-100 shadow-[0_12px_12px_#0000001A,0_5px_5px_#0000000D]"
           />
           <button
             type="button"
+            disabled={!input.trim()}
             onClick={sendUserMessage}
             aria-label="Enviar mensagem"
-            className="absolute right-[8.91px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#1876D2] text-white hover:bg-[#2EA2FF] flex items-center justify-center"
+            className="absolute right-[8.91px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#1876D2] text-white hover:bg-[#2EA2FF] flex items-center justify-center cursor-pointer"
           >
             <FiSend />
           </button>

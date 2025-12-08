@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
 import Avatar from './ui/Avatar';
@@ -54,15 +54,23 @@ export default function SidebarNav({
     },
     { id: 'plan', label: 'Plan', icon: PlanIcon, href: '/plan-simulator' },
   ],
-  defaultActiveId = 'dashboard',
   onSelect,
   initials = 'AC',
   className,
 }: SidebarNavProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   function handleSelect(item: NavItem) {
     onSelect?.(item.id);
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch('/api/logout', { method: 'POST' });
+    } finally {
+      router.replace('/');
+    }
   }
 
   return (
@@ -108,7 +116,13 @@ export default function SidebarNav({
         </nav>
 
         <div className="pb-2">
-          <Avatar initials={initials} />
+          <button
+            onClick={handleLogout}
+            className="cursor-pointer"
+            aria-label="Sair"
+          >
+            <Avatar initials={initials} />
+          </button>
         </div>
       </div>
     </aside>
