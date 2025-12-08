@@ -1,16 +1,45 @@
+'use client';
+
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { Suspense, useRef } from 'react';
 
 import Card from '@/components/ui/Cards';
+import Skeleton from '@/components/ui/Skeleton';
 import Title from '@/components/ui/Title';
 
-export default function TicketMetricsHeader({
+function TicketMetricsSkeleton() {
+  return (
+    <header
+      className="grid grid-cols-4 gap-4 2xl:gap-6 max-md:grid-cols-2"
+      aria-label="Métricas de tickets"
+    >
+      {[0, 1, 2, 3].map((i) => (
+        <Card key={`metric-skeleton-${i}`} className="p-6">
+          <div className="flex flex-col justify-between gap-8">
+            <Skeleton className="h-5 w-32" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-7 w-12" />
+                <Skeleton className="h-7 w-6" />
+              </div>
+              <Skeleton className="h-8 w-8 rounded-full" />
+            </div>
+          </div>
+        </Card>
+      ))}
+    </header>
+  );
+}
+
+function TicketMetricsHeaderInner({
   ticketsList,
-  isLoading,
 }: {
   ticketsList?: TicketsAllResponse;
-  isLoading: boolean;
 }) {
+  const metricsRef = useRef<HTMLDivElement>(null);
+
   const tickets = (ticketsList?.data?.filter(Boolean) || []) as TicketItem[];
 
   const open = tickets.filter((t) => t && t.status === 'Aberto').length;
@@ -68,33 +97,59 @@ export default function TicketMetricsHeader({
       unit: 'h',
     },
   ];
+
+  useGSAP(() => {
+    if (metricsRef.current) {
+      gsap.from(metricsRef.current.children, {
+        opacity: 0,
+        y: 24,
+        stagger: 0.1,
+        duration: 0.45,
+        ease: 'power2.out',
+      });
+    }
+  }, []);
+
   return (
-    <header
-      className="grid grid-cols-4 gap-4 2xl:gap-6 max-md:grid-cols-2 "
-      aria-label="Métricas de tickets"
-    >
-      {metrics.map((metric) => (
-        <Card
-          key={metric.title}
-          aria-label={`${metric.title} ${metric.value} ${metric.unit}`}
-        >
-          <div className="flex flex-col justify-between gap-8">
-            <Title variant="subtitle">{metric.title}</Title>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Title>{metric.value}</Title>
-                <Title>{metric.unit}</Title>
+    <header aria-label="Métricas de tickets">
+      <div
+        className="grid grid-cols-4 gap-4 2xl:gap-6 max-md:grid-cols-2"
+        ref={metricsRef}
+      >
+        {metrics.map((metric) => (
+          <Card
+            key={metric.title}
+            aria-label={`${metric.title} ${metric.value} ${metric.unit}`}
+          >
+            <div className="flex flex-col justify-between gap-8">
+              <Title variant="subtitle">{metric.title}</Title>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Title>{metric.value}</Title>
+                  <Title>{metric.unit}</Title>
+                </div>
+                <Image
+                  src={metric.icon}
+                  alt={metric.title}
+                  width={32}
+                  height={32}
+                />
               </div>
-              <Image
-                src={metric.icon}
-                alt={metric.title}
-                width={32}
-                height={32}
-              />
             </div>
-          </div>
-        </Card>
-      ))}
+          </Card>
+        ))}
+      </div>
     </header>
+  );
+}
+
+export default function TicketMetricsHeader(props: {
+  ticketsList?: TicketsAllResponse;
+  isLoading: boolean;
+}) {
+  return (
+    <Suspense fallback={<TicketMetricsSkeleton />}>
+      <TicketMetricsHeaderInner ticketsList={props.ticketsList} />
+    </Suspense>
   );
 }
