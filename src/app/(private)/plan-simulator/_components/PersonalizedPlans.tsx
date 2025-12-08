@@ -44,6 +44,12 @@ function PersonalizedPlansInner({
     fenomenos: false,
   });
 
+  const addTotal =
+    (benefits.rouboFurto ? 25 : 0) +
+    (benefits.colisao ? 35 : 0) +
+    (benefits.incendio ? 20 : 0) +
+    (benefits.fenomenos ? 30 : 0);
+
   const title = useRef<HTMLHeadingElement>(null);
   const cards = useRef<HTMLDivElement>(null);
 
@@ -106,7 +112,7 @@ function PersonalizedPlansInner({
                   </div>
                   <div className="flex items-baseline flex-col gap-2">
                     <span className="text-2xl font-bold block">
-                      {currency.format(p.value)}
+                      {currency.format(active ? p.value + addTotal : p.value)}
                     </span>
                     <span className="text-sm text-slate-300 block text-[rgba(255,255,255,0.6)]">
                       Por mês
