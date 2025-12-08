@@ -1,7 +1,7 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { LoginFormData, loginSchema } from '@/validation/login';
@@ -13,11 +13,23 @@ import TextField from './ui/TextField';
 
 export default function LoginForm() {
   const router = useRouter();
-  const saved =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('rememberUser') || ''
-      : '';
-
+  const isBrowser = typeof window !== 'undefined';
+  const [remember, setRemember] = useReducer(
+    (_: boolean, v: boolean) => v,
+    (() => {
+      if (!isBrowser) return false;
+      return localStorage.getItem('rememberUserChecked') === 'true';
+    })()
+  );
+  const savedEmail =
+    remember && isBrowser ? localStorage.getItem('rememberUser') || '' : '';
+  useEffect(() => {
+    if (!isBrowser) return;
+    const flag = localStorage.getItem('rememberUserChecked') === 'true';
+    if (flag !== remember) {
+      setTimeout(() => setRemember(flag), 0);
+    }
+  }, [isBrowser, remember]);
   const {
     register,
     handleSubmit,
@@ -25,17 +37,17 @@ export default function LoginForm() {
     getValues,
   } = useForm<LoginFormData>({
     defaultValues: {
-      email: saved || '',
+      email: savedEmail || '',
       password: '',
     },
     mode: 'onChange',
     resolver: zodResolver(loginSchema),
   });
-  const [remember, setRemember] = useState(Boolean(saved));
 
   function handleRememberChange(val: boolean) {
     setRemember(val);
-    if (typeof window === 'undefined') return;
+    if (!isBrowser) return;
+    localStorage.setItem('rememberUserChecked', String(val));
     if (val) {
       const u = getValues('email') ?? '';
       localStorage.setItem('rememberUser', u);
@@ -78,7 +90,7 @@ export default function LoginForm() {
           label="Usuário"
           register={register('email', { required: 'Campo obrigatório' })}
           onChange={(val) => {
-            if (remember && typeof window !== 'undefined') {
+            if (remember && isBrowser) {
               localStorage.setItem('rememberUser', val);
             }
           }}
